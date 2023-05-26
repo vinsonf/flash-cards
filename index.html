@@ -87,7 +87,7 @@
             h1.disabled = true;
             const utterance = new SpeechSynthesisUtterance();
             utterance.text = text;
-            utterance.rate = 1;// Here, you should change rate instead of speed
+            utterance.rate = .7;// Here, you should change rate instead of speed
             synth.speak(utterance);
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
