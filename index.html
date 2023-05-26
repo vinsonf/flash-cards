@@ -16,7 +16,7 @@
         }
 
         button,
-        h1 {
+        button:nth-of-type(2) {
             font-size: 5rem;
             font-weight: 700;
             border: none;
@@ -33,13 +33,13 @@
             background-color: #f20e0e;
         }
 
-        h1 {
+        button:nth-of-type(2){
             margin-top: 2rem;
             color: #f20e0e;
             background-color: #000;
         }
 
-        h1:hover {
+        :nth-of-type(2):hover {
             color: #000;
             background-color: #f20e0e;
         }
@@ -50,7 +50,7 @@
 
 <body>
     <button>Next</button>
-    <h1></h1>
+    <button></button>
     <script>
         const spellingWords = [
             'strike',
@@ -65,29 +65,44 @@
             'heard',
         ];
         let currentWord = -1;
+        let letters = [];
         const button = document.querySelector('button');
-        const h1 = document.querySelector('h1');
+        const h1 = document.querySelectorAll('button')[1]
+        const synth = window.speechSynthesis;
         function vocalSynth(text) {
-            const synth = window.speechSynthesis;
+            h1.disabled = true;
+            button.disabled = true;
             const utterance = new SpeechSynthesisUtterance();
             utterance.text = text;
             synth.speak(utterance);
             synth.speed = 0.5;
+            return new Promise((resolve, reject) => {
+                utterance.onend = resolve;
+                utterance.onerror = reject;
+            });
         }
         button.addEventListener('click', nextWord);
-        h1.addEventListener('click', () => {
-            vocalSynth(spellingWords[currentWord]);
+        h1.addEventListener('click', async () => {
+            await vocalSynth(spellingWords[currentWord]);
+            sayLetters();
         });
-
         function nextWord() {
             currentWord++;
-
             if (currentWord >= spellingWords.length) {
                 currentWord = 0;
             }
+            letters = spellingWords[currentWord].split('');
             h1.textContent = spellingWords[currentWord];
         }
         nextWord();
+        function sayLetters() {
+            if (letters.length === 0) {
+                button.disabled = false;
+                h1.disabled = false;
+                return;
+            }
+            vocalSynth(letters.shift()).then(sayLetters);
+        }
     </script>
 </body>
 
