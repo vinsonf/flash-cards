@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        button, h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            color: #fff;
+            background-color: #000;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            min-height: 6rem;
+            text-align: center;
+            vertical-align: center;
+        }
+    </style>
+</head>
+<body>
+    <button>Next</button>
+    <h1></h1>
+    <script >
+        const spellingWords = [
+            'strike',
+            'spray',
+            'splash',
+            'split',
+            'scrape',
+            'three',
+            'know',
+            'write',
+            'your',
+            'heard',
+        ];
+        let currentWord = -1;
+        const button = document.querySelector('button');
+        const h1 = document.querySelector('h1');
+        function vocalSynth(text) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = text;
+            synth.speak(utterance);
+            synth.speed = 0.5;
+        }
+        button.addEventListener('click', nextWord);
+        h1.addEventListener('click', () => {
+            vocalSynth(spellingWords[currentWord]);
+        });
+
+        function nextWord() {
+            currentWord++;
+         
+            if (currentWord >= spellingWords.length ) {
+                currentWord = 0;
+            }
+            h1.textContent = spellingWords[currentWord];
+        }
+        nextWord();
+    </script>
+</body>
+</html>
