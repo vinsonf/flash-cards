@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        body{
+        body {
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
-        button, h1 {
+
+        button,
+        h1 {
             font-size: 5rem;
             font-weight: 700;
             color: #fff;
@@ -26,12 +29,25 @@
             text-align: center;
             vertical-align: center;
         }
+
+        h1 {
+            margin-top: 2rem;
+            color: #f20e0e;
+            background-color: #000;
+        }
+
+        button,
+        h1:hover {
+            background-color: #2e5901;
+            color: #ffffff;
+        }
     </style>
 </head>
+
 <body>
     <button>Next</button>
     <h1></h1>
-    <script >
+    <script>
         const spellingWords = [
             'strike',
             'spray',
@@ -61,8 +77,8 @@
 
         function nextWord() {
             currentWord++;
-         
-            if (currentWord >= spellingWords.length ) {
+
+            if (currentWord >= spellingWords.length) {
                 currentWord = 0;
             }
             h1.textContent = spellingWords[currentWord];
@@ -70,4 +86,5 @@
         nextWord();
     </script>
 </body>
+
 </html>
