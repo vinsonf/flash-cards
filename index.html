@@ -28,12 +28,12 @@
             vertical-align: center;
         }
 
-        button:hover{
+        button:hover {
             color: #000;
             background-color: #f20e0e;
         }
 
-        button:nth-of-type(2){
+        button:nth-of-type(2) {
             margin-top: 2rem;
             color: #f20e0e;
             background-color: #000;
@@ -43,8 +43,6 @@
             color: #000;
             background-color: #f20e0e;
         }
-
- 
     </style>
 </head>
 
@@ -70,20 +68,27 @@
         const h1 = document.querySelectorAll('button')[1]
         const synth = window.speechSynthesis;
         function vocalSynth(text) {
-            h1.disabled = true;
             button.disabled = true;
+            h1.disabled = true;
             const utterance = new SpeechSynthesisUtterance();
             utterance.text = text;
+            utterance.rate = 1;// Here, you should change rate instead of speed
             synth.speak(utterance);
-            synth.speed = 0.5;
             return new Promise((resolve, reject) => {
-                utterance.onend = resolve;
-                utterance.onerror = reject;
+                setTimeout(() => {
+                    resolve();
+                }, 1);
+                utterance.onerror = () => {
+                    reject(new Error('Speech Synthesis Failed')); // handle the error case
+                    button.disabled = false; // re-enable controls
+                    h1.disabled = false;
+                };
             });
         }
         button.addEventListener('click', nextWord);
         h1.addEventListener('click', async () => {
             await vocalSynth(spellingWords[currentWord]);
+            letters = spellingWords[currentWord].split('');
             sayLetters();
         });
         function nextWord() {
@@ -91,7 +96,6 @@
             if (currentWord >= spellingWords.length) {
                 currentWord = 0;
             }
-            letters = spellingWords[currentWord].split('');
             h1.textContent = spellingWords[currentWord];
         }
         nextWord();
@@ -103,6 +107,7 @@
             }
             vocalSynth(letters.shift()).then(sayLetters);
         }
+
     </script>
 </body>
 
